@@ -3,11 +3,10 @@ import javax.swing.JFrame;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.MouseInfo;
 
 //Hauptfenster
 public class Game extends JFrame
-{
+{	
 	public Game()
 	{
 		InitWindow();
@@ -21,11 +20,13 @@ public class Game extends JFrame
 		pack();
 		setTitle("TicTacTo");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//setLocationRelativeTo(null);
-	}
+		setLocationRelativeTo(null);
+	}	
 
 	public static void main(String[] args)
 	{
+		PlayerInput playerInput = new PlayerInput();
+		
 		EventQueue.invokeLater(() ->
 		{
 			Game game = new Game();
@@ -44,12 +45,14 @@ public class Game extends JFrame
 						int x, y;
 						x = me.getX();
 						y = me.getY() - 25;
-
-						System.out.println(" x = " + x + " , y = " + y);
+						
+						playerInput.CheckPlayerInput(x,y);
+						game.repaint();
+						playerInput.CheckFields();
 					}
 				}
 			});
 		});
 	}
-
+	
 }
