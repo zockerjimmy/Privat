@@ -21,7 +21,7 @@ public class Main extends JFrame
         {
         Thread.sleep(5000);
         Robot robot = new Robot();
-        String fileName = "F://AnwesImg/aimage1.jpg";
+        String fileName = "C://AnwesImg/aimage1.jpg";
         
         //Code
         //Rectangle ScreenRect = new Rectangle(810, 351, 42, 16);
@@ -45,3 +45,48 @@ public class Main extends JFrame
         }
     }
 }
+
+
+/*
+//Erste Reihe
+
+917 - 940
+417 - 440
+
+944 - 967
+417 - 440
+
+971 - 996
+417 - 440
+
+//Zweite Reihe
+
+917 - 940
+446 - 469
+
+944 - 967
+446 - 469
+
+971 - 996
+446 - 469
+
+//Dritte Reihe
+
+917 - 940
+475 - 498
+
+944 - 967
+475 - 498
+
+971 - 996
+475 - 498
+
+//Vierte Reihe
+
+917 - 940
+504 - 528
+
+Groesse:
+23 x 25
+
+*/
