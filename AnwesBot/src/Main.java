@@ -21,82 +21,128 @@ public class Main extends JFrame
     BufferedImage[] buttons = new BufferedImage[10];
     BufferedImage[] tempButtons = new BufferedImage[10];
     BufferedImage[] checkButtons = new BufferedImage[10];
+    BufferedImage textWindowCheck, tempTextWindowCheck;
+    BufferedImage sendButton, tempSendButton;
     
     Rectangle rectDigit1,rectDigit2, rectDigit3, rectDigit4;
     Rectangle[] rectButtons = new Rectangle[10];
+    Rectangle windowCheckRect;
+    Rectangle sendBttnRect;
     
     int[] bttnX  = new int[10];
     int[] bttnY  = new int[10];
     int[] code = new int[4];
-    //int code;
+    int tries = 0;
     Robot robot;
     String fileName;
     
+    JFrame window;
+    JLabel text;
+    
     public Main()
     {
-        try
+        if(window == null)
         {
-        Thread.sleep(0);
-        robot = new Robot();
-        /*code[0] = 0;
-        code[1] = 4;
-        code[2] = 6;
-        code[3] = 8;*/
-        fileName = "Resources/image";
-         
-    //####################################DIGITS##############################
-        
-        setDigitRectangles();       
-        getDigitScreenshots();       
-        getCheckDigits();                          
-        Thread.sleep(500);       
-        getDigits();
-                    
-        for(int i = 0; i < 4; i++)
-        {
-            for(int j = 0; j < 10; j++)
-            {
-                if(checkImage(digits[i], checkDigits[j]))
-                {
-                    System.out.println("OK");
-                    code[i] = j;
-                    break;
-                }
-            }
+         window = new JFrame();
+         window.setLocation(500, 500);
+         text = new JLabel("Tries: " + tries);
+         window.add(text);
+         window.setSize(200, 100);
+         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         window.setFocusable(true);
+         window.setVisible(true);        
         }
-          
-        
-    //####################################BUTTONS##############################
-        
-        getCheckButtons();
-        setButtonRectangles();
-        getButtonScreenshots();         
-        Thread.sleep(500);
-        getButtons();
-    //##################################################################
-        
-         checkButtons(checkButtons, tempButtons);
-         enterCode(code);
-        /* instance.setLocation(500, 500);
-         JLabel text = new JLabel("screenshot saved!");
-         instance.add(text);
-         instance.setSize(200, 100);
-         instance.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         instance.getContentPane().setLayout(new FlowLayout());
-         instance.setVisible(true);*/
-        } catch(AWTException | InterruptedException ex) 
-        {
-            System.err.println(ex);
+              
+        while(window != null)
+        { 
+           execute();
+           tries++;
+           text.setText("Tries: " + tries);
+           try
+           {
+             Thread.sleep(300000);  
+           }
+           catch(InterruptedException ex)
+           {
+               System.out.println(ex);
+           }            
         }
     }
   
     public static void main(String[] args)
-    {
-       Main instance = new Main();    
-    }
-      
-    //####################################BUTTONS##############################
+    {   
+       Main instance = new Main();           
+    }     
     
+    public void setRectangles()
+    {
+        rectButtons[0] = new Rectangle(917, 417, 23, 23);
+        rectButtons[1] = new Rectangle(944, 417, 23, 23);
+        rectButtons[2] = new Rectangle(971, 417, 23, 23);       
+        rectButtons[3] = new Rectangle(917, 446, 23, 23);
+        rectButtons[4] = new Rectangle(944, 446, 23, 23);
+        rectButtons[5] = new Rectangle(971, 446, 23, 23);       
+        rectButtons[6] = new Rectangle(917, 475, 23, 23);
+        rectButtons[7] = new Rectangle(944, 475, 23, 23);
+        rectButtons[8] = new Rectangle(971, 475, 23, 23);        
+        rectButtons[9] = new Rectangle(917, 504, 23, 23);       
+        sendBttnRect = new Rectangle(1054, 613, 75, 24);
+
+        rectDigit1 = new Rectangle(810, 351, 9, 14);
+        rectDigit2 = new Rectangle(820, 351, 9, 14);
+        rectDigit3 = new Rectangle(830, 351, 9, 14);
+        rectDigit4 = new Rectangle(841, 351, 9, 14);
+
+        windowCheckRect = new Rectangle(810, 235, 119, 8);
+    }
+    
+    public void doScreenshots()
+    {
+        try
+        {
+        tempButtons[0] = robot.createScreenCapture(rectButtons[0]);
+        ImageIO.write(tempButtons[0], "jpg", new File(fileName + "00.jpg"));   
+        tempButtons[1] = robot.createScreenCapture(rectButtons[1]);
+        ImageIO.write(tempButtons[1], "jpg", new File(fileName + "01.jpg"));  
+        tempButtons[2] = robot.createScreenCapture(rectButtons[2]);
+        ImageIO.write(tempButtons[2], "jpg", new File(fileName + "02.jpg"));        
+        tempButtons[3] = robot.createScreenCapture(rectButtons[3]);
+        ImageIO.write(tempButtons[3], "jpg", new File(fileName + "03.jpg"));  
+        tempButtons[4] = robot.createScreenCapture(rectButtons[4]);
+        ImageIO.write(tempButtons[4], "jpg", new File(fileName + "04.jpg"));  
+        tempButtons[5] = robot.createScreenCapture(rectButtons[5]);
+        ImageIO.write(tempButtons[5], "jpg", new File(fileName + "05.jpg"));       
+        tempButtons[6] = robot.createScreenCapture(rectButtons[6]);
+        ImageIO.write(tempButtons[6], "jpg", new File(fileName + "06.jpg"));  
+        tempButtons[7] = robot.createScreenCapture(rectButtons[7]);
+        ImageIO.write(tempButtons[7], "jpg", new File(fileName + "07.jpg"));  
+        tempButtons[8] = robot.createScreenCapture(rectButtons[8]);
+        ImageIO.write(tempButtons[8], "jpg", new File(fileName + "08.jpg"));         
+        tempButtons[9] = robot.createScreenCapture(rectButtons[9]);
+        ImageIO.write(tempButtons[9], "jpg", new File(fileName + "09.jpg"));     
+         
+        sendButton = robot.createScreenCapture(sendBttnRect);
+        ImageIO.write(sendButton, "jpg", new File(fileName + "y.jpg"));    
+        
+        
+        digits[0] = robot.createScreenCapture(rectDigit1);
+        ImageIO.write(digits[0], "jpg", new File(fileName + "1.jpg"));         
+        digits[1] = robot.createScreenCapture(rectDigit2);
+        ImageIO.write(digits[1], "jpg", new File(fileName + "2.jpg"));
+        digits[2] = robot.createScreenCapture(rectDigit3);
+        ImageIO.write(digits[2], "jpg", new File(fileName + "3.jpg"));
+        digits[3] = robot.createScreenCapture(rectDigit4);
+        ImageIO.write(digits[3], "jpg", new File(fileName + "4.jpg")); 
+        }
+        catch(IOException ex)
+        {
+             System.err.println(ex);
+        }
+    }
+    
+    
+    
+    //####################################BUTTONS##############################  
     public void getButtons()
     {
         try
@@ -139,7 +185,7 @@ public class Main extends JFrame
         }
     }
     
-    public void setButtonRectangles()
+    /*public void setButtonRectangles()
     {
         rectButtons[0] = new Rectangle(917, 417, 23, 23);
         rectButtons[1] = new Rectangle(944, 417, 23, 23);
@@ -154,9 +200,11 @@ public class Main extends JFrame
         rectButtons[8] = new Rectangle(971, 475, 23, 23);
         
         rectButtons[9] = new Rectangle(917, 504, 23, 23);
-    }
+        
+        sendBttnRect = new Rectangle(1054, 613, 75, 24);
+    }*/
     
-    public void getButtonScreenshots()
+    /*public void getButtonScreenshots()
     {
         try
         {
@@ -182,16 +230,20 @@ public class Main extends JFrame
         ImageIO.write(tempButtons[8], "jpg", new File(fileName + "08.jpg"));  
         
         tempButtons[9] = robot.createScreenCapture(rectButtons[9]);
-        ImageIO.write(tempButtons[9], "jpg", new File(fileName + "09.jpg"));        
+        ImageIO.write(tempButtons[9], "jpg", new File(fileName + "09.jpg"));     
+        
+        
+        sendButton = robot.createScreenCapture(sendBttnRect);
+        ImageIO.write(sendButton, "jpg", new File(fileName + "y.jpg")); 
+        
+        sendButton = ImageIO.read(new File("Resources/imagey.jpg"));            
         }
         catch(IOException ex)
         {
              System.err.println(ex);
         }
-    }
-    
-    //####################################DIGITS###############################
-    
+    }   */
+    //####################################DIGITS###############################   
     public void getCheckDigits()
     {
         try
@@ -228,7 +280,7 @@ public class Main extends JFrame
         }
     }
     
-    public void getDigitScreenshots()
+   /* public void getDigitScreenshots()
     {
         try
         {
@@ -245,17 +297,89 @@ public class Main extends JFrame
         {
              System.err.println(ex);
         }
-    }
+    }*/
     
-    public void setDigitRectangles()
+   /* public void setDigitRectangles()
     {
         rectDigit1 = new Rectangle(810, 351, 9, 14);
         rectDigit2 = new Rectangle(820, 351, 9, 14);
         rectDigit3 = new Rectangle(830, 351, 9, 14);
         rectDigit4 = new Rectangle(841, 351, 9, 14);
-    }
+    }*/
+    //####################################ANDERES##############################   
     
-    //####################################ANDERES##############################
+   /* public void setCheckRect()
+     {
+        windowCheckRect = new Rectangle(810, 235, 119, 8);
+     }*/
+    
+   /* public void getCheckScreenshots()
+    {
+        try
+        {
+        textWindowCheck = robot.createScreenCapture(windowCheckRect);
+        ImageIO.write(textWindowCheck, "jpg", new File(fileName + "x.jpg"));   
+        
+        textWindowCheck = ImageIO.read(new File("Resources/imagex.jpg"));
+        tempTextWindowCheck = ImageIO.read(new File("Resources/other/anwe.jpg"));
+        }
+        catch(IOException ex)
+        {
+             System.err.println(ex);
+        }
+    }*/
+
+    public void execute()
+    {    
+        /*if(checkImage(tempTextWindowCheck, textWindowCheck))
+        {
+            System.out.println("dfgdfgdfg");
+        }*/
+        
+        try
+          {
+          Thread.sleep(2000);
+          robot = new Robot();
+          //setCheckRect();
+          //getCheckScreenshots();         
+          fileName = "Resources/image";        
+      //####################################DIGITS##############################       
+          //setDigitRectangles();       
+          //getDigitScreenshots();       
+          getCheckDigits();                          
+          Thread.sleep(500);       
+          getDigits();
+
+          //setCheckRect();
+          //getCheckScreenshots();
+          for(int i = 0; i < 4; i++)
+          {
+              for(int j = 0; j < 10; j++)
+              {
+                  if(checkImage(digits[i], checkDigits[j]))
+                  {
+                      System.out.println("OK");
+                      code[i] = j;
+                      break;
+                  }
+              }
+          }              
+      //####################################BUTTONS##############################
+
+          getCheckButtons();
+          //setButtonRectangles();
+          //getButtonScreenshots();         
+          Thread.sleep(500);
+          getButtons();
+      //##################################################################
+
+           checkButtons(checkButtons, tempButtons);
+           enterCode(code);
+          } catch(AWTException | InterruptedException ex) 
+          {
+              System.err.println(ex);
+          }     
+    }
     
     public void checkButtons(BufferedImage[] imgs1, BufferedImage[] imgs2)
     {
@@ -370,4 +494,15 @@ public class Main extends JFrame
 
 Groesse:
 23 x 23
+
+Anwesenheit
+810 - 929
+235 - 243
+
+Absenden
+1054 - 1128
+613 - 637
+
+
+
 */
