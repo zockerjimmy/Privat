@@ -54,7 +54,7 @@ public class Main extends JFrame
                     
         for(int i = 0; i < 4; i++)
         {
-            for(int j = 0; j < 4; j++)
+            for(int j = 0; j < 10; j++)
             {
                 if(checkImage(digits[i], checkDigits[j]))
                 {
@@ -200,11 +200,11 @@ public class Main extends JFrame
         checkDigits[1] = ImageIO.read(new File("Resources/digits/1.jpg"));
         checkDigits[2] = ImageIO.read(new File("Resources/digits/2.jpg"));
         checkDigits[3] = ImageIO.read(new File("Resources/digits/3.jpg"));
-        //checkDigits[4] = ImageIO.read(new File("Resources/digits/4.jpg"));
-        //checkDigits[5] = ImageIO.read(new File("Resources/digits/5.jpg"));
-        //checkDigits[6] = ImageIO.read(new File("Resources/digits/6.jpg"));
+        checkDigits[4] = ImageIO.read(new File("Resources/digits/4.jpg"));
+        checkDigits[5] = ImageIO.read(new File("Resources/digits/5.jpg"));
+        checkDigits[6] = ImageIO.read(new File("Resources/digits/6.jpg"));
         checkDigits[7] = ImageIO.read(new File("Resources/digits/7.jpg"));
-        //checkDigits[8] = ImageIO.read(new File("Resources/digits/8.jpg"));
+        checkDigits[8] = ImageIO.read(new File("Resources/digits/8.jpg"));
         checkDigits[9] = ImageIO.read(new File("Resources/digits/9.jpg"));  
         }
         catch(IOException ex) 
