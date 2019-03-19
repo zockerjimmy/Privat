@@ -213,7 +213,7 @@ public class Main extends JFrame
                     {
                         if(checkImage(digits[i], checkDigits[j]))
                         {
-                            //System.out.println("OK");
+                            System.out.println("OK" + i);
                             code[i] = j;
                             break;
                         }
