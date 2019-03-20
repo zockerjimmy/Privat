@@ -16,24 +16,41 @@ import javax.swing.JLabel;
 
 public class Main extends JFrame
 {     
+    //4 Zahlen die vom Launcher generiert werden
     BufferedImage[] digits = new BufferedImage[4];
+    //Referenz-Zahlen
     BufferedImage[] checkDigits = new BufferedImage[10];
+    //Buttons die vom Launcher generiert werden
     BufferedImage[] buttons = new BufferedImage[10];
+    //Nach Vergleich die Buttons geordnet
     BufferedImage[] tempButtons = new BufferedImage[10];
+    //Referenz-Buttons
     BufferedImage[] checkButtons = new BufferedImage[10];
-    BufferedImage textWindowCheck, tempTextWindowCheck;
+    //Titelleiste des "Anwesenheits Prüfung" Fenster
+    BufferedImage AnwesWindowCheck;
+    //Referenz Bild
+    BufferedImage[] tempAnwesWindowCheck = new BufferedImage[2];
+    //Senden Button und Referenz Bild 
     BufferedImage sendButton, tempSendButton;
     
+    //Koordinaten fuer die einzelnen Bilder
     Rectangle rectDigit1,rectDigit2, rectDigit3, rectDigit4;
     Rectangle[] rectButtons = new Rectangle[10];
     Rectangle windowCheckRect;
     Rectangle sendBttnRect;
     
+    //Koordinaten fuer die geordneten Buttons
     int[] bttnX  = new int[10];
     int[] bttnY  = new int[10];
+    
+    //Einzugebener Code
     int[] code = new int[4];
+    
     int tries = 0;
+    
+    //Robot wird benoetigt um Screenshots zu machen und die Maus zu bewegen
     Robot robot;
+    
     String fileName;
     
     JFrame window;
@@ -41,6 +58,7 @@ public class Main extends JFrame
     
     public Main()
     {
+        //Wurde Fenster bereits erstellt?
         if(window == null)
         {
          window = new JFrame();
@@ -52,11 +70,14 @@ public class Main extends JFrame
          window.setFocusable(true);
          window.setVisible(true);        
         } 
+        //Solange Fenster nicht geschlossen wird
         do
         { 
+           //Führe Hauptfunktionen aus...
            execute();
            tries++;
            text.setText("Tries: " + tries);
+           //... und warte 5 minuten bis zum naechsten Versuch
            try
            {
              Thread.sleep(300000);  
@@ -73,6 +94,7 @@ public class Main extends JFrame
        Main instance = new Main();           
     }     
     
+    //Setze Koordinaten fuer Screenshots
     public void setRectangles()
     {
         sendBttnRect = new Rectangle(1054, 613, 75, 24);
@@ -93,16 +115,16 @@ public class Main extends JFrame
         rectDigit3 = new Rectangle(830, 351, 9, 14);
         rectDigit4 = new Rectangle(841, 351, 9, 14);
 
-        windowCheckRect = new Rectangle(810, 235, 119, 8);
-        
+        windowCheckRect = new Rectangle(810, 235, 119, 8);      
     }
     
+    //Erstelle Screenshots und speichere das Bild (Wenn ohne speichern verglichen wird gibt es Fehler)
     public void doScreenshots()
     {
         try
         {    
-        textWindowCheck = robot.createScreenCapture(windowCheckRect);
-        ImageIO.write(textWindowCheck, "jpg", new File(fileName + "x.jpg"));           
+        AnwesWindowCheck = robot.createScreenCapture(windowCheckRect);
+        ImageIO.write(AnwesWindowCheck, "jpg", new File(fileName + "x.jpg"));           
             
         tempButtons[0] = robot.createScreenCapture(rectButtons[0]);
         ImageIO.write(tempButtons[0], "jpg", new File(fileName + "00.jpg"));   
@@ -143,13 +165,15 @@ public class Main extends JFrame
         }
     }
     
+    //Lade die gespeicherten und Referenz Bilder
     public void getImages()
     {
         try
         {
-        textWindowCheck = ImageIO.read(new File("Resources/imagex.jpg"));
-        tempTextWindowCheck = ImageIO.read(new File("Resources/other/anwe.jpg"));   
-      
+        AnwesWindowCheck = ImageIO.read(new File("Resources/imagex.jpg"));
+        tempAnwesWindowCheck[0] = ImageIO.read(new File("Resources/other/anwe.jpg"));   
+        tempAnwesWindowCheck[1] = ImageIO.read(new File("Resources/other/anwe2.jpg"));
+        
         checkButtons[0] = ImageIO.read(new File("Resources/buttons/0.jpg"));
         checkButtons[1] = ImageIO.read(new File("Resources/buttons/1.jpg"));
         checkButtons[2] = ImageIO.read(new File("Resources/buttons/2.jpg"));
@@ -194,19 +218,22 @@ public class Main extends JFrame
         }
     }
 
+    //Hauptfunktion
     public void execute()
     {        
         try
           {   
-            Thread.sleep(0);
+            Thread.sleep(2000);
             robot = new Robot();
             fileName = "Resources/image";	
             setRectangles();
             doScreenshots();
             getImages();
           
-            if(checkImage(tempTextWindowCheck, textWindowCheck))
+            //Ist das "Anwesenheits Prüfung" Fenster offen? Sprich wird eine Eingabe verlangt...
+            if(checkImage(tempAnwesWindowCheck[0], AnwesWindowCheck) || checkImage(tempAnwesWindowCheck[1], AnwesWindowCheck))
             {
+                //Vergleiche erstellte Zahl mit allen Referenz-Bildern bis zur Übereinstimmung und fuege Zahl in Code Array ein
                 for(int i = 0; i < 4; i++)
                 {
                     for(int j = 0; j < 10; j++)
@@ -218,8 +245,11 @@ public class Main extends JFrame
                             break;
                         }
                     }
-                }                   
+                }     
+                //Pruefe Buttons auf Position und speichere diese ab
                 checkButtons(checkButtons, tempButtons);
+                
+                //Gib Code ein
                 enterCode(code);
                 robot.mouseMove(1054+10, 613+10);
                 robot.mousePress(InputEvent.BUTTON1_MASK);
@@ -231,6 +261,7 @@ public class Main extends JFrame
           }     
     }
     
+    //Prueft Buttons auf Position und ordnet sie der Reihe nach in bttnX und bttnY
     public void checkButtons(BufferedImage[] imgs1, BufferedImage[] imgs2)
     {
         for(int i = 0; i < 10; i++)
@@ -247,6 +278,7 @@ public class Main extends JFrame
             }            
         }
     }
+    
     
     public void enterCode(int[] digits)
     {
@@ -269,13 +301,15 @@ public class Main extends JFrame
             robot.mouseRelease(InputEvent.BUTTON1_MASK);*/
     }
     
+    //Vergleiche zwei Bilder Pixel fuer Pixel
     public boolean checkImage(BufferedImage img1, BufferedImage img2)
     {
-        BufferedImage temp1, temp2;
+        /*BufferedImage temp1, temp2;
         temp1 = img1;
-        temp2 = img2;
-        convert2bw(temp1);
-        convert2bw(temp2);        
+        temp2 = img2;*/
+        //Setze zu vergleichende Bilder Schwarze/Weiß
+        img1 = convert2bw(img1);
+        img2 = convert2bw(img2);        
         if(img1.getWidth() == img2.getWidth() && img1.getHeight() == img2.getHeight())
         {
             for(int x = 0; x < img1.getWidth(); x++)
