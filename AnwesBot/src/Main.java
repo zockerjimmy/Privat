@@ -223,7 +223,7 @@ public class Main extends JFrame
     {        
         try
           {   
-            Thread.sleep(2000);
+            Thread.sleep(0);
             robot = new Robot();
             fileName = "Resources/image";	
             setRectangles();
@@ -240,7 +240,7 @@ public class Main extends JFrame
                     {
                         if(checkImage(digits[i], checkDigits[j]))
                         {
-                            System.out.println("OK" + i);
+                            System.out.println("OK" + i + " " + j);
                             code[i] = j;
                             break;
                         }
@@ -318,6 +318,7 @@ public class Main extends JFrame
                 {
                     if(img1.getRGB(x, y) != img2.getRGB(x, y))
                     {
+                        //System.out.println("FEHLER BEI: " + x + " y " + y);
                         return false;
                     }           
                 }
